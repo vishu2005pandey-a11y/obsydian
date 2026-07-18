@@ -5,6 +5,7 @@ import { Preloader } from "@/components/Preloader";
 import { HeroScroll } from "@/components/HeroScroll";
 import dbConnect from "@/lib/db";
 import { Product } from "@/models/Product";
+import { Category } from "@/models/Category";
 import { SiteSettings } from "@/models/SiteSettings";
 
 export const revalidate = 60; // revalidate every minute
