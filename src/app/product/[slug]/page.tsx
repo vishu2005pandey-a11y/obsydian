@@ -6,8 +6,8 @@ import { Star, Truck, ShieldCheck } from "lucide-react";
 
 export const revalidate = 60; // revalidate every minute
 
-export default async function ProductPage({ params }: { params: { slug: string } }) {
-  const { slug } = params;
+export default async function ProductPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
   const decodedSlug = decodeURIComponent(slug);
   await dbConnect();
   

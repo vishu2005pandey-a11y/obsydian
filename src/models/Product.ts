@@ -1,5 +1,5 @@
 import mongoose, { Schema, Document } from 'mongoose';
-
+import './Category'; // Ensure Category is registered before Product
 export interface IProduct extends Document {
   name: string;
   slug: string;
