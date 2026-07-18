@@ -6,8 +6,8 @@ import { Star, Truck, ShieldCheck } from "lucide-react";
 
 export const revalidate = 60; // revalidate every minute
 
-export default async function ProductPage({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params;
+export default async function ProductPage({ params }: { params: { slug: string } }) {
+  const { slug } = params;
   const decodedSlug = decodeURIComponent(slug);
   await dbConnect();
   
@@ -20,13 +20,15 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
   // Serialize MongoDB ObjectId
   const serializedProduct = {
     ...product,
+    price: Number(product.price) || 0,
+    discountPrice: product.discountPrice ? Number(product.discountPrice) : null,
     _id: product._id.toString(),
     category: product.category ? {
       ...(product.category as any),
       _id: (product.category as any)._id ? (product.category as any)._id.toString() : product.category.toString(),
     } : null,
-    createdAt: product.createdAt.toISOString(),
-    updatedAt: product.updatedAt.toISOString(),
+    createdAt: product.createdAt ? new Date(product.createdAt).toISOString() : new Date().toISOString(),
+    updatedAt: product.updatedAt ? new Date(product.updatedAt).toISOString() : new Date().toISOString(),
   };
 
   return (
