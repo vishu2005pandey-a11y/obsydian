@@ -26,6 +26,7 @@ export default function LoginPage() {
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors },
   } = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
@@ -43,6 +44,14 @@ export default function LoginPage() {
 
     if (result?.error) {
       toast.error(result.error);
+      // @ts-ignore
+      if (result.error.includes("register")) {
+        // @ts-ignore
+        setError("root", { type: "manual", message: result.error });
+      } else {
+        // @ts-ignore
+        setError("root", { type: "manual", message: result.error });
+      }
     } else {
       toast.success("Logged in successfully!");
       router.push("/account");
@@ -91,6 +100,16 @@ export default function LoginPage() {
           <Button type="submit" className="w-full" disabled={isLoading}>
             {isLoading ? "Signing in..." : "Sign In"}
           </Button>
+          {errors.root && (
+            <div className="bg-red-500/10 border border-red-500/50 rounded p-3 mt-4 text-center">
+              <p className="text-red-500 text-sm font-medium">{errors.root.message}</p>
+              {errors.root.message?.includes("register first") && (
+                <Link href="/register" className="inline-block mt-2 text-xs bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition-colors">
+                  Go to Register
+                </Link>
+              )}
+            </div>
+          )}
         </form>
 
         <div className="mt-6 flex items-center justify-between">
